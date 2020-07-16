@@ -1,0 +1,76 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<h1>Store</h1>
+
+<div class="row row-cols-1 row-cols-md-4">
+    {% for product in products %}
+
+  <div class="col mb-4">
+    <div class="card">
+
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+       <img src="{{product.imageURL}}" class="card-img-top" alt="NO IMAGE" style="background:#6dc9af;">
+    </div>
+       {% for image in product.image_set.all%}
+    <div class="carousel-item">
+      <img src="{{image.imageURL}}" class="card-img-top" alt="...">
+    </div>
+       {% endfor %}
+  </div>
+</div>
+
+
+      <div class="card-body">
+        <hr>
+    <h5 class="card-title">{{product.name}}</h5>
+          <hr>
+
+     {% for description in product.description_set.all %}
+
+       <p class="card-text">{{description.about}}</p>
+          {% endfor %}
+
+      <hr>
+        <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Add To Cart</button>
+        <h5 style="display: inline-block; float: right;">₹ {{product.price|floatformat:2}}</h5>
+      </div>
+    </div>
+  </div>
+
+{% endfor %}
+
+</div>
+
+<style>
+.card-body{
+
+}
+  .card-img-top{
+width:250px;
+height:250px;
+  }
+</style>
+
+<script>
+<!-- Popover -->
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+$('.carousel').carousel({
+interval: 2000
+})
+
+
+
+</script>
+
+
+{% endblock content %}
+
+
+
+
+

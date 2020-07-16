@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NILE</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script src="{% static 'script/popper.js' %}" ></script>
+
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+
+<script type="text/javascript">
+    var user = '{{request.user}}'
+
+    function getToken(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getToken('csrftoken');
+
+ function getCookie(name) {
+    /* get all name=value pair in an array */
+    var cookieArr = document.cookie.split(";");
+
+    /* Loop through the array elements */
+    for(var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=");
+
+        /* Removing whitespace at the beginning of the cookie name and compare it with the given string */
+        if(name == cookiePair[0].trim()){
+        /* Decode the cookie value and return */
+        return decodeURIComponent(cookiePair[i]);
+        }
+     }
+
+     // return null if not found
+     return null;
+    }
+    var cart = JSON.parse(getCookie('cart'))
+    if(cart == undefined){
+         cart = {}
+         console.log('Cart Created')
+         document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+    }
+
+    console.log('Cart:', cart)
+
+
+
+</script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0c386b;">
+  <a class="navbar-brand" href="{% url 'store' %}"><strong>NILE</strong></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'store' %}">Store<span class="sr-only">(current)</span></a>
+      </li>
+
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+      <!-- <a href="##" class="btn btn-outline-warning my-2 my-sm-0">Sign In</a> -->
+
+        <a href="{% url 'cart' %}">
+            <img id="cart-image" src="{% static 'images/cart.png' %}" style="width:40px; height:40px; color:yellow;">
+        </a>
+        <p id="cart-total" style="color:white;"><strong>{{cartItems}}</strong></p>
+      </div>
+  </div>
+</nav>
+
+<div class="container">
+{% block content %}
+
+    {% endblock content %}
+</div>
+
+<style>
+    #cart-image{
+display: inline-block;
+    margin:0px 0px 0px 20px;
+    }
+    #cart-total{
+    background-color:red;
+    border-radius:50%;
+    height:20px;
+    width:15px;
+    text-align:center;
+    display: block;
+    font-size: 14px;
+        }
+
+</style>
+
+ <script src="{% static 'script/addCart.js' %}" ></script>
+
+</body>
+</html>
